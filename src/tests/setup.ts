@@ -1,8 +1,13 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
-import { afterEach, beforeAll, afterAll } from "vitest";
+import { afterAll, afterEach, beforeAll, expect } from "vitest";
+import "vitest-axe/extend-expect";
+import * as axeMatchers from "vitest-axe/matchers";
+
 import { server } from "./mocks/server";
 
+// expect.extend(matchers);
+expect.extend(axeMatchers);
 // Start server before all tests
 beforeAll(() => server.listen());
 

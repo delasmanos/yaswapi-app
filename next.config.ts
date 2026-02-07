@@ -1,5 +1,6 @@
+import path from "path";
+
 import type { NextConfig } from "next";
-const path = require("path");
 const nextConfig: NextConfig = {
   // cacheComponents: true,
   logging: {
@@ -9,7 +10,7 @@ const nextConfig: NextConfig = {
     },
   },
   turbopack: {
-    root: path.join(__dirname, ".."),
+    root: path.join(import.meta.dirname, ".."),
   },
 };
 
