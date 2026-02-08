@@ -1,10 +1,7 @@
 import { CardLink } from "@/components/ui/card-link";
-import {
-  FieldAccessor,
-  isEmptyValue,
-  resolveField,
-  resolvePattern,
-} from "./cardlis-util";
+
+import type { FieldAccessor } from "./cardlis-util";
+import { isEmptyValue, resolveField, resolvePattern } from "./cardlis-util";
 import { DtEntry } from "./definiton-entry";
 /**
  * Configuration for a single field to display in the card
@@ -19,7 +16,7 @@ type Field<T> = {
   /** skip rendering if itemvalue is empty */
   hideIfEmpty?: boolean;
 };
-type DataCardListProps<T extends Record<string, any>> = {
+type DataCardListProps<T extends Record<string, unknown>> = {
   /** Array of items to display as cards */
   items: T[];
   /** How to get the unique key for each item */
@@ -32,7 +29,7 @@ type DataCardListProps<T extends Record<string, any>> = {
   fields: Field<T>[];
   hideIfEmpty?: boolean;
 };
-export function DataCardList<T extends Record<string, any>>({
+export function DataCardList<T extends Record<string, unknown>>({
   items,
   keyField,
   hrefPattern,

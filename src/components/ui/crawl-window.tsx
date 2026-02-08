@@ -42,6 +42,7 @@ export function CrawlWindow({ title, text }: CrawlWindowProps) {
             className={cn(
               "flex flex-col  justify-center text-yellow-500 font-bold hover:pause-animation",
               { "motion-safe:animate-vertical-marquee": isAnimated },
+              { hidden: !isAnimated },
             )}
           >
             <h2 className="text-4xl mb-8 mt-4 text-center">{title} </h2>

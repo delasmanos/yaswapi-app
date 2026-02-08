@@ -1,7 +1,8 @@
 import { getRelatedByUrls } from "@/features/common/api";
 import { mapPerson } from "@/features/people/mappers";
-import { PersonDto } from "@/features/people/types";
+import type { PersonDto } from "@/features/people/types";
 import { swapiClient } from "@/lib/api/swapi-client";
+
 import { DataCardList } from "./components/card-list";
 
 export default async function RelatedCharacters({ urls }: { urls: string[] }) {

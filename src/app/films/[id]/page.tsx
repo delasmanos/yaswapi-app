@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Button } from "@/components/ui/button";
 import { CrawlWindow } from "@/components/ui/crawl-window";
@@ -7,7 +8,7 @@ import { SkeletonCardList } from "@/components/ui/SkeletonCardList";
 import { getFilm } from "@/features/films/api";
 import { mapFilm } from "@/features/films/mappers";
 import { swapiClient } from "@/lib/api/swapi-client";
-import { Suspense } from "react";
+
 import RelatedCharacters from "./related-characters";
 import RelatedPlanets from "./related-planets";
 

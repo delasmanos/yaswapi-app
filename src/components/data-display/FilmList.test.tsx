@@ -147,7 +147,6 @@ describe("FilmList - Accessibility", () => {
     });
 
     it("should allow activation of links with Enter key", async () => {
-      const user = userEvent.setup();
       render(<FilmList films={mockFilms} />);
       const links = screen.getAllByRole("link");
 

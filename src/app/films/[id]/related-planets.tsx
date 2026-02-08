@@ -2,6 +2,7 @@ import { getRelatedByUrls } from "@/features/common/api";
 import { mapPlanet } from "@/features/planets/mappers";
 import type { PlanetDTO } from "@/features/planets/types";
 import { swapiClient } from "@/lib/api/swapi-client";
+
 import { DataCardList } from "./components/card-list";
 
 export default async function RelatedPlanets({ urls }: { urls: string[] }) {
