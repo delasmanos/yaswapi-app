@@ -144,24 +144,4 @@
 
 @utility vertical-marquee {
   will-change: transform;
-  /* animation-iteration-count: 1; */
 }
-
-/* .animate-marquee {
-  will-change: transform;
-  animation: vertical-marquee 8s ease-in-out infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-@keyframes vertical-marquee {
-  from {
-    transform: perspective(10000px) rotateX(45deg) translateY(100%);
-  }
-
-  to {
-    transform: perspective(1000px) rotateX(45deg) translateY(-150%);
-  }
-} */
