@@ -119,7 +119,7 @@ The application consumes the **SWAPI (Star Wars API)** at `https://swapi.dev/api
 
 ### Component Organization
 
-_Need a little work right now it is a bit chaotic.
+_Need a little work right now it is a bit chaotic._
 
 - **UI Components**: Reusable, unstyled primitives from Radix UI
 - **Data Display Components**: Feature-specific components for displaying data
