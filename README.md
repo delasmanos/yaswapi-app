@@ -6,7 +6,7 @@
 
 Just in case you did not noticed this is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-**TL;DR**
+**TL;DR**:
 
 First, run the development server:
 
@@ -170,6 +170,7 @@ Based on the TODO notes in the project:
 3. Expand test coverage for all features
 4. Add more sophisticated error boundaries
 5. add renovate and github actions
+6. adhere more to [conventional commits](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13#examples)
 
 ## Design Philosophy
 
