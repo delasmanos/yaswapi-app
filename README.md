@@ -6,6 +6,8 @@
 
 Just in case you did not noticed this is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+And yes I know it's completely over engineered :)
+
 **TL;DR**:
 
 First, run the development server:
