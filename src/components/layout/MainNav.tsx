@@ -19,7 +19,11 @@ export const MainNav = () => {
     <header className="border-b">
       <div className="container mx-auto flex h-16 items-center px-4">
         <div className="mr-8  md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+          <Link
+            href="/"
+            className="mr-6 flex items-center space-x-2"
+            aria-label="Home page"
+          >
             <span className="hidden font-bold sm:inline-block">
               {APP_CONFIG.TITLE}
             </span>
