@@ -24,6 +24,8 @@ bun dev
 
 Then open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+The current state of the main branch is [here](https://yaswapi-app.vercel.app/) deployed.
+
 ## Purpose
 
 This project serves as a coding challenge implementation with the following key objectives:
