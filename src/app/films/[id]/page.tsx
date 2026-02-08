@@ -30,6 +30,7 @@ export default async function FilmDetailPage(props: PageProps) {
     { id: "characters", label: "Characters" },
     { id: "planets", label: "Planets" },
   ];
+
   return (
     <main className="container mx-auto py-10 px-4 space-y-12 ">
       <div className="sticky top-4 z-10 w-fit mx-auto">
