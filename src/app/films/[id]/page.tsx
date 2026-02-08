@@ -9,6 +9,7 @@ import { getFilm } from "@/features/films/api";
 import { mapFilm } from "@/features/films/mappers";
 import { swapiClient } from "@/lib/api/swapi-client";
 
+import { JumpMenu } from "./components/jump-menu";
 import RelatedCharacters from "./related-characters";
 import RelatedPlanets from "./related-planets";
 
@@ -16,29 +17,42 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+/**
+ * TODO: move the data fetching and mapping into api/common so the page does not depend on the swapi client or the mappers directly. The page should only know about a Film type, not FilmDTO or how to fetch it.
+ */
 export default async function FilmDetailPage(props: PageProps) {
   const params = await props.params;
   const { id } = params;
 
   const filmDto = await getFilm(swapiClient, id);
   const film = mapFilm(filmDto);
-
+  const sections = [
+    { id: "characters", label: "Characters" },
+    { id: "planets", label: "Planets" },
+  ];
   return (
-    <main className="container mx-auto py-10 px-4 space-y-12">
-      <Button variant="outline" asChild className="mb-4">
-        <Link href="/films" aria-label="Back to films list">
-          ← Back to List
-        </Link>
-      </Button>
+    <main className="container mx-auto py-10 px-4 space-y-12 ">
+      <div className="sticky top-4 z-10 w-fit mx-auto">
+        <div className="flex flex-row justify-center gap-2 bg-background/70 rounded-md p-1 border-accent/50 border shadow-sm">
+          <Button variant="ghost" asChild className="">
+            <Link href="/films" aria-label="Back to films list">
+              ← Back to List
+            </Link>
+          </Button>
 
-      <section className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight">
-          Episode {film.episodeId}: {film.title}
-        </h1>
+          <JumpMenu sections={sections} variant={"row"} />
+        </div>
+      </div>
+      <Section
+        className="text-center space-y-4"
+        title={`Episode ${film.episodeId}: ${film.title}`}
+        tag="h1"
+        headingClassName="text-4xl font-bold tracking-tight"
+      >
         <p className="text-muted-foreground text-lg">
           Released: {film.releaseDate.getFullYear()}
         </p>
-      </section>
+      </Section>
 
       <section
         className="max-w-4xl mx-auto motion-reduce:hidden"
@@ -51,10 +65,12 @@ export default async function FilmDetailPage(props: PageProps) {
       </section>
 
       <article className="max-w-4xl mx-auto space-y-12">
-        <section className="bg-card text-card-foreground rounded-lg border shadow-sm p-8">
-          <h3 className="text-2xl font-bold mb-6 border-b pb-4">
-            Production Details
-          </h3>
+        <Section
+          className="bg-card text-card-foreground rounded-lg border shadow-sm p-8"
+          title="Production Details"
+          tag="h3"
+          headingClassName="text-2xl font-bold mb-6 border-b pb-4"
+        >
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <dt className="text-sm font-medium text-muted-foreground">
@@ -81,20 +97,20 @@ export default async function FilmDetailPage(props: PageProps) {
               <dd className="text-lg">{film.releaseDate.getFullYear()}</dd>
             </div>
           </dl>
-        </section>
+        </Section>
         {film.characterUrls.length > 0 && (
-          <Section title="Characters">
-            <Suspense fallback={<SkeletonCardList />}>
+          <Suspense fallback={<SkeletonCardList />}>
+            <Section title="Characters">
               <RelatedCharacters urls={film.characterUrls} />
-            </Suspense>
-          </Section>
+            </Section>
+          </Suspense>
         )}
         {film.planetUrls.length > 0 && (
-          <Section title="Planets">
-            <Suspense fallback={<SkeletonCardList />}>
+          <Suspense fallback={<SkeletonCardList />}>
+            <Section title="Planets">
               <RelatedPlanets urls={film.planetUrls} />
-            </Suspense>
-          </Section>
+            </Section>
+          </Suspense>
         )}
       </article>
     </main>
