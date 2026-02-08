@@ -34,6 +34,13 @@ This project serves as a coding challenge implementation with the following key 
 4. **Testing & Quality**: Includes comprehensive test coverage and linting
 5. **Showcase**: Demonstrates production-ready patterns for consuming third-party APIs with Next.js
 
+## What works until now
+
+- [The Home page](http://localhost:3000)
+- [The Film overview page](http://localhost:3000/films)
+- [Related film characters](http://localhost:3000/films/5#characters) (streamed, when ready you can jump to it by url or by a menu click).
+- [Related planets](http://localhost:3000/films/5#planets)
+
 ## Technology Stack
 
 ### Core Framework & Runtime
