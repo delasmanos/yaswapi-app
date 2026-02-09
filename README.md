@@ -40,6 +40,7 @@ This project serves as a coding challenge implementation with the following key 
 
 - SEO
 - Performance optimization
+- Styling it's just a quick implementaion without fancy styling
 
 ## What works until now
 
