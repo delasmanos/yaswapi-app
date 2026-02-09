@@ -2,7 +2,7 @@
 
 ## Overview
 
-**YASWAPI-APP** Yet another SWAPI App (Coding Challenge - Star Wars API) is a Next.js web application. Since It was completely up to me what I do i was a little lost and decided to showcase a modern, server-side rendered approach to consuming third-party APIs. The project demonstrates best practices in accessibility, architecture, and testing while building a Star Wars Encyclopedia. Of course a little chaotic because of the small timeframe.
+**YASWAPI-APP** Yet another SWAPI App (Coding Challenge - Star Wars API) is a Next.js web application. Since It was completely up to me what I do i was a little lost and decided to showcase a modern, server-side rendered approach how to consume third-party APIs. The project demonstrates best practices in accessibility, architecture, and testing while building a Star Wars Encyclopedia. Of course a little chaotic because of the small timeframe.
 
 Just in case you did not noticed this is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
