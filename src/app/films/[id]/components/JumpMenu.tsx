@@ -1,5 +1,10 @@
 "use client";
 
+import type { VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,9 +13,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { cva, VariantProps } from "class-variance-authority";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
 
 const JumpMenuVariants = cva("", {
   variants: {

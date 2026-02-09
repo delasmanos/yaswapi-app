@@ -1,6 +1,6 @@
 import React from "react";
 
-export const DtEntry = ({
+export const DefinitionEntry = ({
   label,
   value,
 }: {

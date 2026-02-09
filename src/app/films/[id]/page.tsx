@@ -9,9 +9,9 @@ import { getFilm } from "@/features/films/api";
 import { mapFilm } from "@/features/films/mappers";
 import { swapiClient } from "@/lib/api/swapi-client";
 
-import { JumpMenu } from "./components/jump-menu";
-import RelatedCharacters from "./related-characters";
-import RelatedPlanets from "./related-planets";
+import { JumpMenu } from "./components/JumpMenu";
+import RelatedCharactersPartial from "./RelatedCharactersPartial";
+import RelatedPlanetsPartial from "./RelatedPlanetsPartial";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -102,14 +102,14 @@ export default async function FilmDetailPage(props: PageProps) {
         {film.characterUrls.length > 0 && (
           <Suspense fallback={<SkeletonCardList />}>
             <Section title="Characters">
-              <RelatedCharacters urls={film.characterUrls} />
+              <RelatedCharactersPartial urls={film.characterUrls} />
             </Section>
           </Suspense>
         )}
         {film.planetUrls.length > 0 && (
           <Suspense fallback={<SkeletonCardList />}>
             <Section title="Planets">
-              <RelatedPlanets urls={film.planetUrls} />
+              <RelatedPlanetsPartial urls={film.planetUrls} />
             </Section>
           </Suspense>
         )}

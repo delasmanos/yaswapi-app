@@ -3,9 +3,13 @@ import { mapPerson } from "@/features/people/mappers";
 import type { PersonDto } from "@/features/people/types";
 import { swapiClient } from "@/lib/api/swapi-client";
 
-import { DataCardList } from "./components/card-list";
+import { DataCardList } from "./components/DataCardList";
 
-export default async function RelatedCharacters({ urls }: { urls: string[] }) {
+export default async function RelatedCharactersPartial({
+  urls,
+}: {
+  urls: string[];
+}) {
   const films = await getRelatedByUrls<PersonDto>(swapiClient, urls);
   const mappedPeople = films.map(mapPerson);
 

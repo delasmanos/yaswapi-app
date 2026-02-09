@@ -1,8 +1,12 @@
 import { CardLink } from "@/components/ui/card-link";
 
-import type { FieldAccessor } from "./cardlis-util";
-import { isEmptyValue, resolveField, resolvePattern } from "./cardlis-util";
-import { DtEntry } from "./definiton-entry";
+import type { FieldAccessor } from "./data-cardlist-util";
+import {
+  isEmptyValue,
+  resolveField,
+  resolvePattern,
+} from "./data-cardlist-util";
+import { DefinitionEntry } from "./DefinitonEntry";
 /**
  * Configuration for a single field to display in the card
  *
@@ -58,7 +62,11 @@ export function DataCardList<T extends Record<string, unknown>>({
                     return null;
                   }
                   return (
-                    <DtEntry key={index} label={config.label} value={value} />
+                    <DefinitionEntry
+                      key={index}
+                      label={config.label}
+                      value={value}
+                    />
                   );
                 })}
               </dl>

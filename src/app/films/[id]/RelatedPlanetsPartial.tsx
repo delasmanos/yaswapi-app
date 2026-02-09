@@ -3,9 +3,13 @@ import { mapPlanet } from "@/features/planets/mappers";
 import type { PlanetDTO } from "@/features/planets/types";
 import { swapiClient } from "@/lib/api/swapi-client";
 
-import { DataCardList } from "./components/card-list";
+import { DataCardList } from "./components/DataCardList";
 
-export default async function RelatedPlanets({ urls }: { urls: string[] }) {
+export default async function RelatedPlanetsPartial({
+  urls,
+}: {
+  urls: string[];
+}) {
   const planets = await getRelatedByUrls<PlanetDTO>(swapiClient, urls);
   const mappedPlanets = planets.map(mapPlanet);
 
