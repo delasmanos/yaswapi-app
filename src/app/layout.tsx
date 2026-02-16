@@ -1,11 +1,11 @@
 import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { MainNav } from "@/components/layout/MainNav";
-import { APP_CONFIG } from "@/lib/config";
 
+import { APP_CONFIG } from "@/lib/config";
 import "@/styles/globals.css";
+import type { Metadata } from "next/types";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,23 +23,30 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: "yaswapi app",
   },
-  icons: [
-    {
-      url: "/favicon.ico",
-      sizes: "any",
-      type: "image/x-icon",
-    },
-    {
-      url: "/images/icon.svg",
-      sizes: "any",
-      type: "image/svg+xml",
-    },
-    {
-      url: "/images/icon.png",
-      sizes: "any",
-      type: "image/png",
-    },
-  ],
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        sizes: "any",
+        type: "image/x-icon",
+      },
+      {
+        url: "/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/images/icon-192.png",
+        sizes: "any",
+        type: "image/png",
+      },
+      {
+        url: "/images/icon-512.png",
+        sizes: "any",
+        type: "image/png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
