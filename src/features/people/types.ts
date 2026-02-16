@@ -23,7 +23,7 @@ export const PersonSchema = z.object({
   id: z.string(),
   name: z.string(),
   height: z.float32(),
-  mass: z.string(),
+  mass: z.number().nullable(),
   hairColor: z.string(),
   skinColor: z.string(),
   eyeColor: z.string(),
@@ -34,6 +34,10 @@ export const PersonSchema = z.object({
   speciesUrls: z.array(z.url()),
   vehicleUrls: z.array(z.url()),
   starshipUrls: z.array(z.url()),
+  filmCount: z.number(),
+  specieCount: z.number(),
+  vehicleCount: z.number(),
+  starshipCount: z.number(),
 });
 
 export type Person = z.infer<typeof PersonSchema>;

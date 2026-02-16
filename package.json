@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --debug-prerender",
     "start": "next start",
     "lint": "eslint",
     "lint:just-errors": "eslint --quiet",
@@ -12,7 +12,9 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@tanstack/query-async-storage-persister": "^5.90.22",
     "@tanstack/react-query": "^5.90.20",
+    "@tanstack/react-query-persist-client": "^5.90.22",
     "@tanstack/react-table": "^8.21.3",
     "@vercel/analytics": "^1.6.1",
     "class-variance-authority": "^0.7.1",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
