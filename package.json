@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --debug-prerender",
+    "build": "next build",
+    "build:debug": "next build --debug-prerender",
     "start": "next start",
     "lint": "eslint",
     "lint:just-errors": "eslint --quiet",
