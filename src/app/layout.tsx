@@ -30,12 +30,12 @@ export const metadata: Metadata = {
       type: "image/x-icon",
     },
     {
-      url: "/icon_vector.svg",
+      url: "/images/icon.svg",
       sizes: "any",
       type: "image/svg+xml",
     },
     {
-      url: "/icon.png",
+      url: "/images/icon.png",
       sizes: "any",
       type: "image/png",
     },
