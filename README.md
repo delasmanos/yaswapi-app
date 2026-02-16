@@ -48,6 +48,7 @@ This project serves as a coding challenge implementation with the following key 
 - [The Film overview page](http://localhost:3000/films)
 - [Related film characters](http://localhost:3000/films/5#characters) (streamed, when ready you can jump to it by url or by a menu click).
 - [Related planets](http://localhost:3000/films/5#planets)
+- People list complete clientside fetching and caching
 
 ## Technology Stack
 
