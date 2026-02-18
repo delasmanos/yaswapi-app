@@ -1,6 +1,4 @@
 "use client";
-
-import { SearchInput } from "@/components/data-display/SearchInput";
 import { queryClient } from "@/components/provider/PersistentQueryProvider";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,68 +16,49 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { usePeopleQuery } from "@/features/people/hooks";
+import { ListResponse } from "@/lib/api/types";
 import {
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
   useReactTable,
+  type ColumnDef,
+  type TableOptions,
 } from "@tanstack/react-table";
 import { X } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDeferredValue, useEffect, useState } from "react";
-import { columns } from "./people-column-definition";
+import { SearchInput } from "../SearchInput";
 
-export function PeopleList() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  // Read initial values from URL
-  const [search, setSearch] = useState(searchParams.get("search") ?? "");
-  const [page, setPage] = useState(Number(searchParams.get("page") ?? 1));
-  // Defer the search value so typing doesn't feel laggy
-  const deferredSearch = useDeferredValue(search);
-
-  // Sync state → URL
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (deferredSearch) params.set("search", deferredSearch);
-    if (page > 1) params.set("page", String(page));
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [deferredSearch, page]);
-
-  // Reset to page 1 whenever search changes
-  useEffect(() => {
-    setPage(1);
-  }, [deferredSearch]);
-
-  const { data, isLoading, isFetching } = usePeopleQuery({
-    page,
-    search: deferredSearch,
-  });
-
-  const pageCount = data?.count ? Math.ceil(data?.count / 10) : 0;
-
+type ListDataTableProps<T extends Record<string, unknown>> = {
+  result: ListResponse<T> | undefined;
+  columns: ColumnDef<T>[];
+  isLoading?: boolean;
+  isError?: boolean;
+  isFetching?: boolean;
+  // allow caller to forward any extra table options (sorting state, pagination, etc.)
+  tableOptions?: Partial<
+    Omit<TableOptions<T>, "data" | "columns" | "getCoreRowModel">
+  >;
+  search?: string;
+  onSearch: (search: string) => void;
+  searchError: string | null;
+};
+export function ListDataTable<TDoimainModel extends Record<string, unknown>>({
+  columns,
+  onSearch,
+  result,
+  isFetching,
+  isError,
+  isLoading,
+  search = "",
+  tableOptions,
+  searchError = null,
+}: ListDataTableProps<TDoimainModel>) {
   const table = useReactTable({
-    data: data?.people ?? [],
+    data: result?.results ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    manualPagination: true,
-    rowCount: data?.count ?? 0,
-    state: {
-      sorting,
-      pagination: {
-        pageIndex: page - 1,
-        pageSize: 10,
-      },
-    },
+    ...tableOptions,
   });
+
   return (
     <div>
       <div role="status" aria-live="polite" className="sr-only">
@@ -90,14 +69,14 @@ export function PeopleList() {
           <SearchInput
             name="search"
             search={search}
-            setSearch={setSearch}
+            setSearch={onSearch}
             suffix={
               <>
                 <Button
                   variant={"outline"}
                   size="icon-xs"
                   aria-label="clear"
-                  onClick={() => setSearch("")}
+                  onClick={() => onSearch("")}
                   aria-controls="people-tbody"
                 >
                   <X />
@@ -107,10 +86,14 @@ export function PeopleList() {
           />
 
           <div className="mt-2 text-sm text-muted-foreground flex gap-4">
-            Results: {data?.count ?? 0}{" "}
+            Results: {result?.count ?? 0}
             {isLoading ||
               (isFetching && <Spinner className="self-center size-4" />)}
           </div>
+          <p className="text-red-500">{searchError}</p>
+          {isError && (
+            <span className="text-destructive">Error fetching data</span>
+          )}
         </search>
         <div className="ml-auto gap-2 flex center">
           {table.getState().sorting.length > 0 && (
@@ -132,7 +115,7 @@ export function PeopleList() {
         </div>
       </div>
       <div className="rounded-md border">
-        <Table aria-label="Star Wars characters" aria-rowcount={data?.count}>
+        <Table aria-label="Star Wars characters" aria-rowcount={result?.count}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -155,7 +138,7 @@ export function PeopleList() {
             {isLoading ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <TableRow key={i} aria-hidden="true">
-                  {columns.map((_, j) => (
+                  {columns?.map((_, j) => (
                     <TableCell key={j}>—</TableCell>
                   ))}
                 </TableRow>
@@ -180,7 +163,7 @@ export function PeopleList() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns?.length ?? 0}
                   className="h-24 text-center"
                 >
                   No results.
@@ -191,23 +174,22 @@ export function PeopleList() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {!deferredSearch && (
+        {!search && (
           <Pagination className="gap-2">
             <PaginationItem>
               <PaginationPrevious
-                // href={`?page=${currentPage - 1}`}
                 aria-label="Go to previous page"
-                aria-disabled={page <= 1 || isFetching}
-                {...(!table.getCanPreviousPage() && { disabled: true })}
+                aria-disabled={!table.getCanPreviousPage() || isFetching}
+                disabled={!table.getCanPreviousPage() || isFetching}
                 onClick={(e) => {
                   e.preventDefault();
-                  setPage(page - 1);
+                  table.previousPage();
                 }}
               />
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
-                onClick={() => setPage((p) => p + 1)}
+                onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage() || isFetching}
                 aria-label="Next page"
               >
@@ -217,7 +199,8 @@ export function PeopleList() {
           </Pagination>
         )}
         <p className="self-start" aria-current="page">
-          Page {page} of {pageCount}
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
         </p>
       </div>
     </div>

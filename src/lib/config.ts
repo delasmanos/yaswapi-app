@@ -16,6 +16,7 @@ export const APP_CONFIG = {
     { label: "Home", href: "/" },
     { label: "Films", href: "/films" },
     { label: "People", href: "/people" },
+    { label: "Planets", href: "/planets" },
   ],
 } as const;
 

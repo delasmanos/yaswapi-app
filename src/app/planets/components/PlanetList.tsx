@@ -18,8 +18,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { usePeopleQuery } from "@/features/people/hooks";
+import { usePlanetsQuery } from "@/features/planets/hooks";
+import { ListResponse } from "@/lib/api/types";
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -29,14 +31,11 @@ import {
 import { X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDeferredValue, useEffect, useState } from "react";
-import { columns } from "./people-column-definition";
-
-export function PeopleList() {
+import { columns as cols } from "./planets-column-definition";
+export const Bla = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const [sorting, setSorting] = useState<SortingState>([]);
 
   // Read initial values from URL
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
@@ -57,16 +56,54 @@ export function PeopleList() {
     setPage(1);
   }, [deferredSearch]);
 
-  const { data, isLoading, isFetching } = usePeopleQuery({
+  const { data, isLoading, isFetching, isError } = usePlanetsQuery({
     page,
     search: deferredSearch,
   });
 
+  return (
+    <PlanetList
+      data={data}
+      search={search}
+      onSearch={setSearch}
+      page={page}
+      setPage={setPage}
+      isFetching={isFetching}
+      isError={isError}
+      isLoading={isLoading}
+    />
+  );
+};
+
+type ListProps<TDoimainModel extends Record<string, unknown>> = {
+  data: ListResponse<TDoimainModel> | undefined;
+  columns?: ColumnDef<TDoimainModel>[];
+  search?: string;
+  onSearch: (search: string) => void;
+  page: number;
+  setPage: (page: number) => void;
+  isFetching?: boolean;
+  isError?: boolean;
+  isLoading?: boolean;
+};
+
+export function PlanetList<TDoimainModel extends Record<string, unknown>>({
+  columns,
+  onSearch,
+  page,
+  setPage,
+  data,
+  isFetching,
+  isError,
+  isLoading,
+  search = "",
+}: ListProps<TDoimainModel>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
   const pageCount = data?.count ? Math.ceil(data?.count / 10) : 0;
 
   const table = useReactTable({
-    data: data?.people ?? [],
-    columns,
+    data: data?.results ?? [],
+    columns: (columns ?? cols) as ColumnDef<TDoimainModel>[],
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
@@ -80,6 +117,9 @@ export function PeopleList() {
       },
     },
   });
+  console.log("rendering list with data", data);
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data.</div>;
   return (
     <div>
       <div role="status" aria-live="polite" className="sr-only">
@@ -90,14 +130,14 @@ export function PeopleList() {
           <SearchInput
             name="search"
             search={search}
-            setSearch={setSearch}
+            setSearch={onSearch}
             suffix={
               <>
                 <Button
                   variant={"outline"}
                   size="icon-xs"
                   aria-label="clear"
-                  onClick={() => setSearch("")}
+                  onClick={() => onSearch("")}
                   aria-controls="people-tbody"
                 >
                   <X />
@@ -111,6 +151,9 @@ export function PeopleList() {
             {isLoading ||
               (isFetching && <Spinner className="self-center size-4" />)}
           </div>
+          {isError && (
+            <span className="text-destructive">Error fetching data</span>
+          )}
         </search>
         <div className="ml-auto gap-2 flex center">
           {table.getState().sorting.length > 0 && (
@@ -155,7 +198,7 @@ export function PeopleList() {
             {isLoading ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <TableRow key={i} aria-hidden="true">
-                  {columns.map((_, j) => (
+                  {columns?.map((_, j) => (
                     <TableCell key={j}>—</TableCell>
                   ))}
                 </TableRow>
@@ -180,7 +223,7 @@ export function PeopleList() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns?.length ?? 0}
                   className="h-24 text-center"
                 >
                   No results.
@@ -191,14 +234,13 @@ export function PeopleList() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {!deferredSearch && (
+        {!search && (
           <Pagination className="gap-2">
             <PaginationItem>
               <PaginationPrevious
-                // href={`?page=${currentPage - 1}`}
                 aria-label="Go to previous page"
                 aria-disabled={page <= 1 || isFetching}
-                {...(!table.getCanPreviousPage() && { disabled: true })}
+                disabled={!table.getCanPreviousPage() || isFetching}
                 onClick={(e) => {
                   e.preventDefault();
                   setPage(page - 1);
@@ -207,7 +249,7 @@ export function PeopleList() {
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
-                onClick={() => setPage((p) => p + 1)}
+                onClick={() => setPage(page + 1)}
                 disabled={!table.getCanNextPage() || isFetching}
                 aria-label="Next page"
               >
